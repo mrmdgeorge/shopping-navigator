@@ -50,9 +50,9 @@ This software has the following dependencies.  Depending on the exact configurat
 6. HARDWARE REQUIREMENTS
 ------------------------
 
-* *ShoppingNavigator* requires an Xsens IMU ( [link](http://www.xsens.com)) and a Pt. Grey camera ([link](http://www.ptgrey.com)).  Software was tested with the Xsens MTi and a Pt. Grey FireFly IEEE 1397 camera.
+* *ShoppingNavigator* requires an Xsens IMU ([http://www.xsens.com](http://www.xsens.com)) and a Pt. Grey camera ([http://www.ptgrey.com](http://www.ptgrey.com)).  Software was tested with the Xsens MTi and a Pt. Grey FireFly IEEE 1397 camera.
 
-* *wImuConsole* requires an InvenSense MPU9150 IMU ( [link](http://www.invensense.com/)) w/ a custom bluetooth interface and an Android cellphone.  Software was tested with a Google Nexus 4 phone running Android 4.2.2 API 17.  The custom IMU can be licensed by contacting mgeorge@cmu.edu and the CMU Center for Technology Transfer and Enterprise Creation (CTTEC) via innovation@cmu.edu.
+* *wImuConsole* requires an InvenSense MPU9150 IMU ([http://www.invensense.com/](http://www.invensense.com/)) w/ a custom bluetooth interface and an Android cellphone.  Software was tested with a Google Nexus 4 phone running Android 4.2.2 API 17.  The custom IMU can be licensed by contacting mgeorge@cmu.edu and the CMU Center for Technology Transfer and Enterprise Creation (CTTEC) via innovation@cmu.edu.
 
 * *AndroidIns* requires an Android cellphone.  Software was tested with a Google Nexus 4 phone running Android 4.2.2 API 17.  AndroidIns also requires the libAndroidIns.so binary which is included for devices with ARM based CPUs.   
 
