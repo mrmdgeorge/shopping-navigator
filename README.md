@@ -1,7 +1,7 @@
 1. ACKNOWLEDGEMENTS
 -------------------
 
-The software contained herein was developed by the National Robotics Engineering Center (NREC) at Carnegie Mellon University (CMU) under funding from the Intel Science and Technology Center for Embedded Computing (ISTC-EC) project Personal Navigation for New Shopping Experiences.  Contributors include Michael George, Michel Laverne, Dane Bennington, Prof. Alonzo Kelly & Prof. Tamal Mukherjee.
+The software contained herein was developed by the National Robotics Engineering Center (NREC) at Carnegie Mellon University (CMU) under funding from the Intel Science and Technology Center for Embedded Computing (ISTC-EC) as part of the Personal Navigation for New Shopping Experiences project.  Contributors include Michael George, Michel Laverne, Dane Bennington, Prof. Alonzo Kelly & Prof. Tamal Mukherjee.
 
 2. PURPOSE
 ----------
@@ -18,9 +18,9 @@ This is proof-of-concept work.  It has been developed to the stage of initial de
 
 * *ShoppingNavigator* - A linux (or Mac OS X) software package that uses an Xsens IMU and a Pt. Grey camera to perform pedestrian inertial navigation or pedestrian dead-reckoning (Step counting) w/ corrections from a pre-built map and scene recognition provided by the Oxford FABMAP system.
 
-* *wImuConsole* - An Android app. that interfaces to the ShoppingNavigator components but uses a custom wireless (Bluetooth) IMU and the cellphone's built-in camera.  Tested with the Google Nexus 4 running Android 4.2.2 API 17.
+* *wImuConsole* - An Android app. that interfaces to the ShoppingNavigator components but uses a custom wireless (Bluetooth) IMU and the cellphone's built-in camera.
 
-* *AndroidIns* - An Android app. that performs inertial navigation w/ zero velocity corrections via a Kalman filter using the built-in gyroscope and accelerometers in a cellphone.  Tested with the Google Nexus 4.
+* *AndroidIns* - An Android app. that performs inertial navigation w/ zero velocity corrections via a Kalman filter using the built-in gyroscope and accelerometers in a cellphone.
 
 5. SOFTWARE DEPENDENCIES
 ------------------------
