@@ -6,7 +6,7 @@ The software contained herein was developed by the National Robotics Engineering
 2. PURPOSE
 ----------
 
-The Personal Navigation for New Shopping Experiences project developed and demonstrated proof-of-concept systems enabling indoor and GPS free navigation techniques for pedestrians.  Several combinations of sensors (IMUs, cameras and custom radar) were evaluated.  The software contained herein allows indoor navigation based on an IMU and a camera.
+The Personal Navigation for New Shopping Experiences project developed and demonstrated proof-of-concept systems enabling indoor and GPS free navigation techniques for pedestrians in retail environments.  Several combinations of sensors (IMUs, cameras and custom radar) were evaluated.  The software contained herein allows indoor navigation based on an IMU and a camera.
 
 3. LIMITATIONS
 --------------
