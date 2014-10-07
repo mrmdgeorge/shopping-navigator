@@ -45,6 +45,8 @@ This software has the following dependencies.  Depending on the exact configurat
 
 * Google Play Services (For access to the Google Maps Android API):  [http://developer.android.com/google/play-services/maps.html](http://developer.android.com/google/play-services/maps.html)
 
+* Android Support Libraries (Tested w/ version 4): [http://developer.android.com/tools/support-library/index.html](http://developer.android.com/tools/support-library/index.html)
+
 6. HARDWARE REQUIREMENTS
 ------------------------
 

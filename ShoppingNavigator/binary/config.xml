@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The MIT License (MIT) -->
+<!-- Copyright (c) 2014 Carnegie Mellon University -->
+<!-- Permission is hereby granted, free of charge, to any person obtaining a copy -->
+<!-- of this software and associated documentation files (the "Software"), to deal -->
+<!-- in the Software without restriction, including without limitation the rights -->
+<!-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the Software is -->
+<!-- furnished to do so, subject to the following conditions: -->
+<!-- The above copyright notice and this permission notice shall be included in -->
+<!-- all copies or substantial portions of the Software. -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR -->
+<!-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE -->
+<!-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER -->
+<!-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, -->
+<!-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN -->
+<!-- THE SOFTWARE. -->
+<!-- Intel Configuration file.  -->
+<parameters>
+  <!-- Parameters for the hardware we are using -->
+  <hardware>
+    <source>
+      camera
+    </source>
+    <!-- IMU parameters.  When adding a new IMU replicate the HG1930 parameters -->
+    <camera>
+      <hardwareId>
+        0
+      </hardwareId>
+      <ip>
+        127.0.0.1
+      </ip>
+      <port>
+        1555
+      </port>
+    </camera>
+    <sensors>
+      <xsens-mti>
+        <rate units="Hz">
+          100
+        </rate>
+        <basilid>
+          3
+        </basilid>
+        <!-- Uncertainties are standard deviations. -->
+        <uncertainty>
+          <gyroxnoise units="rad/s">
+            0.001
+          </gyroxnoise>
+          <gyroynoise units="rad/s">
+            0.001
+          </gyroynoise>
+          <gyroznoise units="rad/s">
+            0.001
+          </gyroznoise>
+          <gyroxbiasdrift units="rad/s">
+            8.1e-8
+          </gyroxbiasdrift>
+          <gyroybiasdrift units="rad/s">
+            8.1e-8
+          </gyroybiasdrift>
+          <gyrozbiasdrift units="rad/s">
+            8.1e-8
+          </gyrozbiasdrift>
+          <gyroxscaledrift units="/s">
+            4.2e-6
+          </gyroxscaledrift>
+          <gyroyscaledrift units="/s">
+            4.2e-6
+          </gyroyscaledrift>
+          <gyrozscaledrift units="/s">
+            4.2e-6
+          </gyrozscaledrift>                                                                  
+          <gyroxgbiasdrift units="rad/m">
+            1.6e-8
+          </gyroxgbiasdrift>
+          <gyroygbiasdrift units="rad/m">
+            1.6e-8
+          </gyroygbiasdrift>
+          <gyrozgbiasdrift units="rad/m">
+            1.6e-8
+          </gyrozgbiasdrift>
+          <accelxnoise units="m/s/s">
+            0.15
+          </accelxnoise>
+          <accelynoise units="m/s/s">
+            0.15
+          </accelynoise>
+          <accelznoise units="m/s/s">
+            0.15
+          </accelznoise>                    
+          <accelxbiasdrift units="m/s/s/s">
+            5e-2
+          </accelxbiasdrift>
+          <accelybiasdrift units="m/s/s/s">
+            5e-2
+          </accelybiasdrift>
+          <accelzbiasdrift units="m/s/s/s">
+            5e-2
+          </accelzbiasdrift>                    
+          <accelxscaledrift units="/s">
+            2.5e-6
+          </accelxscaledrift>
+          <accelyscaledrift units="/s">
+            2.5e-6
+          </accelyscaledrift>
+          <accelzscaledrift units="/s">
+            2.5e-6
+          </accelzscaledrift>                    
+        </uncertainty>
+      </xsens-mti>
+    </sensors>
+  </hardware>
+  <!-- INS parameters. -->
+  <ins>
+    <boot-ins>
+      <on>
+        true 
+      </on>
+      <imu>
+        xsens-mti
+      </imu>
+      <id>
+        0
+      </id>
+      <initialheading units="Degrees">
+        90.0 
+      </initialheading>
+      <initialposition units="Meters">
+        <x>
+          0.0
+        </x>
+        <y>
+          0.0
+        </y>
+        <z>
+          0.0
+        </z>
+      </initialposition>
+      <alignmentperiod units="s">
+        10.0
+      </alignmentperiod>
+      <earthupdaterate units="Hz">
+        1
+      </earthupdaterate>
+      <approximatelatitude units="Degrees">
+       40.44
+      </approximatelatitude>
+      <calibrategyro units="true/false">
+        false 
+      </calibrategyro>
+      <orientationoutput units="0(Eulers), 1(Rotation Vector)">
+        0
+      </orientationoutput>
+    </boot-ins>
+  </ins>
+  <!-- Filter -->
+  <filter>
+    <pose-filter>
+      <on>
+        true 
+      </on>
+      <numstates units="9=PVA Only, 15=PVA+Biases, 27=PVA+Biases+Scales+Gravity">
+        15
+      </numstates>
+      <imu>
+        xsens-mti
+      </imu>
+      <gatemeasurements>
+        false
+      </gatemeasurements>
+      <diagnosticson>
+        false
+      </diagnosticson>
+      <rate units="Hz">
+        10
+      </rate>
+      <predictstride units="Samples">
+        50
+      </predictstride>
+      <measurements>
+        <zupts>
+          <on>
+            true
+          </on>
+          <type>
+            walking
+          </type>
+          <uncertainty units="m/s">
+            0.08
+          </uncertainty>
+        </zupts>
+        <place-recognition>
+          <on>
+            true
+          </on>
+          <uncertainty units="m">
+            0.2
+          </uncertainty>
+        </place-recognition>
+      </measurements>
+      <initialuncertainty>
+        <roll units="radians">
+          0.087
+        </roll>
+        <pitch units="radians">
+          0.087
+        </pitch>
+        <heading units="radians">
+          0.087
+        </heading>
+        <north units="m">
+          0.5
+        </north>
+        <east units="m">
+          0.5
+        </east>
+        <down units="m">
+          0.5
+        </down>
+        <northvel units="m/s">
+          0.01
+        </northvel>
+        <eastvel units="m/s">
+          0.01
+        </eastvel>
+        <downvel units="m/s">
+          0.01
+        </downvel>
+        <gyroxbias units="rad/s">
+          0.03
+        </gyroxbias>
+        <gyroybias units="rad/s">
+          0.03
+        </gyroybias>
+        <gyrozbias units="rad/s">
+          0.03
+        </gyrozbias>
+        <accelxbias units="m/s/s">
+          0.03
+        </accelxbias>
+        <accelybias units="m/s/s">
+          0.03
+        </accelybias>
+        <accelzbias units="m/s/s">
+          0.03
+        </accelzbias>
+      </initialuncertainty>
+    </pose-filter>
+  </filter>
+  <!-- Stance ZUPT detector - for use while walking-->
+  <zupts>
+    <walking>
+      <window units="Accelerometer Samples">
+        42 
+      </window>
+      <threshold units="m^2/s^4">
+        0.2
+      </threshold>
+    </walking>
+    <!-- True ZUPT detector - for use while still -->
+  </zupts>
+  <!-- Step detector - finds foot impact -->
+  <stepdetector>
+    <window units="Accelerometer Samples">
+      4
+    </window>
+    <threshold units= "m/s/s">
+      40
+    </threshold>
+  </stepdetector>
+  <!-- UDP Display server settings.  BASIListener will connect to this -->
+  <ipserver>
+    <on>
+      true
+    </on>
+    <ip>
+      127.0.0.1
+    </ip>
+    <port>
+      54321
+    </port>
+    <stride>
+      100
+    </stride>
+  </ipserver>
+  <!-- File Logger -->
+  <logger>
+    <on>
+      true 
+    </on>
+    <filename>
+      intellog
+    </filename>
+    <stride>
+      1
+    </stride>
+  </logger>
+</parameters>

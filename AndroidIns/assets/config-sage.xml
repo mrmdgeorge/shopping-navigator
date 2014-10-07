@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The MIT License (MIT) -->
+<!-- Copyright (c) 2014 Carnegie Mellon University -->
+<!-- Permission is hereby granted, free of charge, to any person obtaining a copy -->
+<!-- of this software and associated documentation files (the "Software"), to deal -->
+<!-- in the Software without restriction, including without limitation the rights -->
+<!-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the Software is -->
+<!-- furnished to do so, subject to the following conditions: -->
+<!-- The above copyright notice and this permission notice shall be included in -->
+<!-- all copies or substantial portions of the Software. -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR -->
+<!-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE -->
+<!-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER -->
+<!-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, -->
+<!-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN -->
+<!-- THE SOFTWARE. -->
+<!-- Configuration file.  -->
+<parameters>
+  <!-- Parameters for the hardware we are using -->
+  <hardware>
+    <source>
+      sage-fpga
+    </source>
+    <!--  -->
+    <sage-fpga>
+      <hardwareId>
+      	0
+      </hardwareId>
+      <ip>
+        192.168.1.10
+      </ip>
+      <subnet-mask>
+        255.255.255.0
+      </subnet-mask>
+      <gateway>
+      	192.168.1.1
+      </gateway>
+      <mac-address>
+      	00:0A:35:00:01:02
+      </mac-address>
+      <port>
+        1530
+      </port>
+    </sage-fpga>
+    <radar-fpga>
+      <ip>
+        192.168.1.17
+      </ip>
+      <port>
+        1530
+      </port>
+    </radar-fpga>
+    <!-- Connected sensors -->
+    <connected_sensors>
+    	<imu0>
+    		<msgtype units="MessageType from basil.h">
+    			0
+    		</msgtype>
+    		<model units="Names from sensor configuration section">
+    			invensense-mpu6050
+    		</model>
+    		<port_id>
+    			0
+    		</port_id>
+    	</imu0>
+    	<gps0>
+    		<msgtype units="MessageType from basil.h">
+    			1
+    		</msgtype>
+    		<model units="Names from sensor configuration section">
+    			novatel-oemv
+    		</model>
+    		<port_id>
+    			0
+    		</port_id>
+    	</gps0>
+    </connected_sensors>
+    <!-- IMU parameters. -->
+    <sensors>
+      <invensense-mpu6050>
+      	<interface units="sdlc=0, serial=1">
+      		0
+      	</interface>
+      	<baud_rate>
+      		1000000
+      	</baud_rate>
+        <rate units="Hz">
+          200
+        </rate>
+        <basilid units="ImuMdl Id from basil.h">
+          0
+        </basilid>
+	    <!-- Uncertainties are standard deviations. -->
+	    <uncertainty>
+          <gyroxnoise units="rad/s">
+            8.7e-5
+          </gyroxnoise>
+          <gyroynoise units="rad/s">
+            8.7e-5
+          </gyroynoise>
+          <gyroznoise units="rad/s">
+            8.7e-5
+          </gyroznoise>
+          <gyroxbiasdrift units="rad/s">
+            8.1e-3
+          </gyroxbiasdrift>
+          <gyroybiasdrift units="rad/s">
+            8.1e-3
+          </gyroybiasdrift>
+          <gyrozbiasdrift units="rad/s">
+            8.1e-3
+          </gyrozbiasdrift>
+          <accelxnoise units="m/s/s">
+            0.004
+          </accelxnoise>
+          <accelynoise units="m/s/s">
+            0.004
+          </accelynoise>
+          <accelznoise units="m/s/s">
+            0.004
+          </accelznoise>                    
+          <accelxbiasdrift units="m/s/s/s">
+            0.5
+          </accelxbiasdrift>
+          <accelybiasdrift units="m/s/s/s">
+            0.5
+          </accelybiasdrift>
+          <accelzbiasdrift units="m/s/s/s">
+            0.5
+          </accelzbiasdrift>                    
+        </uncertainty>
+      </invensense-mpu6050>
+      <!-- GPS parameters.  When adding a new GPS replicate the Novatel-OEMV parameters -->
+      <novatel-oemv>
+      	<interface units="sdlc=0, serial=1">
+      		1
+      	</interface>
+      	<baud_rate>
+      		230400
+      	</baud_rate>
+        <rate units="Hz">
+          1
+        </rate>
+        <basilid units="GpsMdl Id from basil.h">
+          0
+        </basilid>
+      </novatel-oemv>
+    </sensors>
+  </hardware>
+  <!-- INS parameters. -->
+  <ins>
+    <sage-main>
+      <on>
+        true
+      </on>
+      <imu>
+        invensense-mpu6050
+      </imu>
+      <id>
+        0
+      </id>
+      <initialheading units="Degrees">
+        0.0
+      </initialheading>
+      <initialposition units="Meters">
+        <x>
+          0.0
+        </x>
+        <y>
+          0.0
+        </y>
+        <z>
+          0.0
+        </z>
+      </initialposition>
+      <alignmentperiod units="s">
+        4.0
+      </alignmentperiod>
+      <earthupdaterate units="Hz">
+        1
+      </earthupdaterate>
+      <approximatelatitude units="Degrees">
+        40.44 
+      </approximatelatitude>
+      <calibrategyro units="true/false">
+        true
+      </calibrategyro>
+    </sage-main>
+  </ins>
+  <!-- Filter parameters-->
+  <filter>
+    <sage-main>    
+      <on>
+        true
+      </on>
+      <imu>
+        invensense-mpu6050
+      </imu>
+      <imuid>
+        0
+      </imuid>
+      <numstates units="9=PVA Only, 15=PVA+Biases, 27=PVA+Biases+Scales+Gravity">
+        9 
+      </numstates>
+      <measurements>
+        <zupts>
+          <on>
+            true
+          </on>
+          <type>
+            walking
+          </type>
+          <uncertainty units="m/s">
+            0.001
+          </uncertainty>
+        </zupts>
+      </measurements>
+      <rate units="Hz">
+        10
+      </rate>
+      <predictstride units="Samples">
+        20
+      </predictstride>
+      <initialuncertainty>
+        <roll units="radians">
+          0.01
+        </roll>
+        <pitch units="radians">
+          0.01
+        </pitch>
+        <heading units="radians">
+          0.01
+        </heading>
+        <north units="m">
+          0.01
+        </north>
+        <east units="m">
+          0.01
+        </east>
+        <down units="m">
+          0.01
+        </down>
+        <northvel units="m/s">
+          0.001
+        </northvel>
+        <eastvel units="m/s">
+          0.001
+        </eastvel>
+        <downvel units="m/s">
+          0.001
+        </downvel>
+        <gyroxbias units="rad/s">
+          3e-5
+        </gyroxbias>
+        <gyroybias units="rad/s">
+          3e-5
+        </gyroybias>
+        <gyrozbias units="rad/s">
+          3e-5
+        </gyrozbias>
+        <accelxbias units="m/s/s">
+          0.03
+        </accelxbias>
+        <accelybias units="m/s/s">
+          0.03
+        </accelybias>
+        <accelzbias units="m/s/s">
+          0.03
+        </accelzbias>
+      </initialuncertainty>
+      <gatemeasurements>
+        false
+      </gatemeasurements>
+      <diagnosticson>
+        false
+      </diagnosticson>
+    </sage-main>  
+  </filter>
+  <zupts>
+    <!-- Stance ZUPT detector - for use while walking-->
+    <walking>
+      <window units="Accelerometer Samples">
+        30
+      </window>
+      <threshold units="m/s/s">
+        0.3
+      </threshold>
+    </walking>
+    <!-- True ZUPT detector - for use while still -->
+    <vehicle>
+      <window units="Accelerometer Samples">
+        100
+      </window>
+      <threshold units="m/s/s">
+        0.05
+      </threshold>
+    </vehicle>
+  </zupts>
+  <!-- IP server settings.  Destination for BASIL data -->
+  <ipserver>
+    <on>
+      true
+    </on>
+    <ip>
+      192.168.1.255
+    </ip>
+    <port>
+      1530
+    </port>
+    <stride>
+      1
+    </stride>
+    <ptpd>
+      false
+    </ptpd>
+    <pps_master>
+      <enabled>
+      	true
+      </enabled>
+      <broadcast_ip>
+      	225.0.0.37
+      </broadcast_ip>
+      <broadcast_port>
+      	12345
+      </broadcast_port>
+    </pps_master>
+  </ipserver>
+  <!-- File Logger -->
+  <logger>
+    <on>
+      true 
+    </on>
+    <filename>
+      sagelog
+    </filename>
+    <stride>
+      1 
+    </stride>
+  </logger>
+</parameters>

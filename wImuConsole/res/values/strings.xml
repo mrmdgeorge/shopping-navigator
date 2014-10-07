@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Application name and activity titles -->
+    <string name="app_name">wImuConsole</string>
+    <string name="wimu_settings_title">wImu Settings</string>
+    <string name="map_activity_title">Map View</string>
+
+    <!-- Action bar items -->
+    <string name="wimu_settings_action">Sensors</string>
+    <string name="map_action">Map View</string>
+    <string name="camera_action">Camera</string>
+
+    <string-array name="sensors_list">
+        <item>IMU</item>
+        <item>INS</item>
+        <item>Camera</item>
+    </string-array>
+    
+    <!-- IMU settings fragment -->
+    <string-array name="wimu_list">
+        <item>00:06:66:09:C5:11</item>
+        <item>00:06:66:09:C5:13</item>
+        <item>00:06:66:09:C5:15</item>
+        <item>00:06:66:09:C5:0F</item>
+    </string-array>
+    
+    <!-- INS settings fragment -->
+    <string name="status_header">Status:</string>
+    <string name="solution_header">Solution:</string>
+    <string name="wimu_id_header">wImu Id:</string>
+    <string name="ori_header">Orientation (deg):</string>
+    <string name="pos_header">Position (m):</string>
+    <string name="vel_header">Velocity (m/s):</string>
+    <string name="start_button">Start</string>
+    <string name="stop_button">Stop</string>
+    <string name="connect_button">Connect</string>
+    <string name="reset_button">Reset</string>
+    <string name="log_button">Start</string>
+    <string name="log_header">Log Data:</string>
+    <string name="log_filename">wimu_log.basil</string>
+    
+    <!-- Camera settings activity -->
+    <string name="camera_rate_button">Set Frame Delay (s)</string>
+    <string name="camera_frame_delay">5</string>
+    
+    <!-- Error strings -->
+    <string name="bt_not_enabled_leaving">Bluetooth not enabled. Closing.</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

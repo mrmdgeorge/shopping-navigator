@@ -1,0 +1,287 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".SensorSettingsActivity"
+    tools:ignore="MergeRootFrame" >
+     
+    <LinearLayout
+        android:id="@+id/wimuselectlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal" >
+        
+     <TextView
+         android:id="@+id/wimuheader"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/wimu_id_header"
+         android:textAppearance="?android:attr/textAppearanceSmall" 
+         android:layout_weight="1"/>
+        
+     <Spinner
+        android:id="@+id/wimulist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="2"/>
+     
+     <Button
+        android:id="@+id/connectbutton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connect_button"
+        android:layout_weight="1" 
+        android:onClick="connectToImu"/>
+    </LinearLayout>
+       
+    <TextView
+        android:id="@+id/statusheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/wimuselectlayout"
+        android:layout_marginTop="10dp"      
+        android:text="@string/status_header"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+    <TextView
+        android:id="@+id/statusreport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wimuselectlayout"
+        android:layout_marginTop="10dp"      
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/oriheader"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/solutionheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/statusheader"
+        android:layout_marginTop="10dp"  
+        android:text="@string/solution_header"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/solutionreport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/statusheader"
+        android:layout_marginTop="10dp"      
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/oriheader"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/oriheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/solutionheader"
+        android:layout_marginTop="10dp"   
+        android:text="@string/ori_header"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+    
+    <LinearLayout
+        android:id="@+id/orilayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/solutionheader"
+        android:layout_toRightOf="@+id/oriheader"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/ox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right" 
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/oy"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/oz"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    </LinearLayout>
+       
+    <TextView
+        android:id="@+id/posheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/oriheader"
+        android:layout_marginTop="10dp"   
+        android:text="@string/pos_header"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+    
+    <LinearLayout
+        android:id="@+id/poslayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/oriheader"
+        android:layout_below="@+id/oriheader"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/px"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/py"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/pz"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    </LinearLayout>
+       
+    <TextView
+        android:id="@+id/velheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/posheader"
+        android:layout_marginTop="10dp"   
+        android:text="@string/vel_header"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+    
+    <LinearLayout
+        android:id="@+id/vellayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/oriheader"
+        android:layout_below="@+id/posheader"
+        android:layout_marginTop="10dp" 
+        android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/vx"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/vy"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/vz"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_weight="1" />
+    </LinearLayout>
+       
+    <LinearLayout
+        android:id="@+id/controllayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/vellayout"
+        android:layout_marginTop="50dp" 
+        android:orientation="horizontal" >
+    <Button
+        android:id="@+id/startbutton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_button" 
+        android:layout_weight="1"
+        android:onClick="sendBasilStartMsg" />
+    <Button
+        android:id="@+id/resetbutton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_button"
+        android:layout_weight="1"
+        android:onClick="sendBasilResetMsg" />
+     <Button
+        android:id="@+id/stopbutton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_button"
+        android:layout_weight="1" 
+        android:onClick="sendBasilStopMsg"/>
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/logheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wimuselectlayout"
+        android:layout_below="@+id/controllayout"
+        android:layout_marginTop="65dp"   
+        android:text="@string/log_header"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+    
+    <LinearLayout
+        android:id="@+id/loglayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/logheader"
+        android:layout_below="@+id/controllayout"
+        android:layout_marginTop="50dp" 
+        android:orientation="horizontal" >
+    <EditText
+        android:id="@+id/logfilename"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log_filename"
+        android:layout_weight="1"
+        android:ems="10" >
+        <requestFocus />
+    </EditText>
+    <Button
+        android:id="@+id/logbutton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log_button" 
+        android:layout_weight="3"
+        android:onClick="toggleLogging" />
+    </LinearLayout>
+</RelativeLayout>

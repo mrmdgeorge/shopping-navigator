@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The MIT License (MIT) -->
+<!-- Copyright (c) 2014 Carnegie Mellon University -->
+<!-- Permission is hereby granted, free of charge, to any person obtaining a copy -->
+<!-- of this software and associated documentation files (the "Software"), to deal -->
+<!-- in the Software without restriction, including without limitation the rights -->
+<!-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the Software is -->
+<!-- furnished to do so, subject to the following conditions: -->
+<!-- The above copyright notice and this permission notice shall be included in -->
+<!-- all copies or substantial portions of the Software. -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR -->
+<!-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE -->
+<!-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER -->
+<!-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, -->
+<!-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN -->
+<!-- THE SOFTWARE. -->
+<!-- Intel Configuration file.  -->
+<parameters>
+  <!-- Parameters for the hardware we are using -->
+  <hardware>
+    <!-- NREC's FPGAs.  Other UDP sensors will have to spoof this. -->
+    <nrecfpga>
+      <udpport>
+        1530
+      </udpport>
+      <displaystatus>
+	    true
+      </displaystatus>
+    </nrecfpga>
+    <!-- IMU parameters.  When adding a new IMU replicate the HG1930 parameters -->
+    <imus>
+      <xsensmti>
+        <rate units="Hz">
+          100
+        </rate>
+	    <!-- Uncertainties are standard deviations. -->
+	    <uncertainty>
+          <gyroxnoise units="rad/s">
+            0.02
+          </gyroxnoise>
+          <gyroynoise units="rad/s">
+            0.02
+          </gyroynoise>
+          <gyroznoise units="rad/s">
+            0.02
+          </gyroznoise>
+          <forwardnoise units="m">
+            0.2
+          </forwardnoise> 
+          <lateralnoise units="m">
+            0.1
+          </lateralnoise>               
+        </uncertainty>
+      </xsensmti>
+    </imus>
+    <gnss>
+      <lograwdata>
+        true
+      </lograwdata>
+    </gnss>
+  </hardware>
+  <!-- PDR parameters. -->
+  <pdr>
+    <steplength>
+      1.45
+    </steplength>
+  </pdr>
+  <!-- INS parameters. -->
+  <ins>
+    <on>
+      true 
+    </on>
+    <initialheading units="Degrees">
+      90.0
+    </initialheading>
+    <initialrange units="m">
+      0.20
+    </initialrange>
+    <alignmentperiod units="s">
+      4.0
+    </alignmentperiod>
+    <earthupdaterate units="Hz">
+      1
+    </earthupdaterate>
+    <approximatelatitude units="Degrees">
+     44.00 
+    </approximatelatitude>
+  </ins>
+  <!-- Filter -->
+  <filter>
+    <on>
+      true 
+    </on>
+    <numstates units="9=PVA Only, 15=PVA+Biases, 27=PVA+Biases+Scales+Gravity">
+     9 
+    </numstates>
+    <type units="0=Standard KF, 1=Fading Mem. KF">
+      0
+    </type>
+    <gatemeasurementson>
+      false
+    </gatemeasurementson>
+    <diagnosticson>
+      true
+    </diagnosticson>
+    <rate units="Hz">
+      10
+    </rate>
+    <predictstride units="Samples">
+      10
+    </predictstride>
+    <initialuncertainty>
+      <roll units="radians">
+        0.087
+      </roll>
+      <pitch units="radians">
+        0.087
+      </pitch>
+      <heading units="radians">
+        0.087
+      </heading>
+      <north units="m">
+        0.5
+      </north>
+      <east units="m">
+        0.5
+      </east>
+      <down units="m">
+        0.5
+      </down>
+    </initialuncertainty>
+  </filter>
+  <placerecognition>
+    <uncertainty units="m">
+      0.25
+    </uncertainty>
+  </placerecognition>
+  <!-- Stance ZUPT detector - for use while walking-->
+  <zuptdetectors>
+    <stance>
+      <window units="Accelerometer Samples">
+        8 
+      </window>
+      <threshold units="m^2/s^4">
+        0.3
+      </threshold>
+      <uncertainty units="m/s">
+        0.15
+      </uncertainty>
+    </stance>
+    <!-- True ZUPT detector - for use while still -->
+    <still>
+      <window units="Accelerometer Samples">
+        100
+      </window>
+      <threshold>
+        <accelerometers units="m/s/s">
+          0.05
+        </accelerometers>
+        <gyros units = "rad/s">
+          0.0006
+        </gyros>
+      </threshold>
+      <uncertainty units="m/s">
+        0.15
+      </uncertainty>
+      <headingsd>
+        0.00035
+      </headingsd>
+      <gyrobiassd>
+        0.0006
+      </gyrobiassd>
+    </still>
+  </zuptdetectors>
+  <!-- Step detector - finds foot impact -->
+  <stepdetector>
+    <window units="Accelerometer Samples">
+      4
+    </window>
+    <threshold units= "m/s/s">
+      40
+    </threshold>
+  </stepdetector>
+  <!-- Pivot Velocity Model Paramters -->
+  <pivotmodel>
+    <pivotpoint>
+      <x>
+        0.0
+      </x>
+      <y>
+        -0.05
+      </y>
+      <z>
+        0.25
+      </z>
+      <uncertainty>
+        <x>
+          0.03
+        </x>
+        <y>
+          0.03
+        </y>
+        <z>
+          0.1
+        </z>
+      </uncertainty>
+    </pivotpoint>    
+  </pivotmodel>
+  <!-- SRS Sensor -->
+  <srs>
+    <on>
+      true 
+    </on>
+    <uncertainty units="m">
+      0.08
+    </uncertainty>
+    <stride units="samples">
+      1
+    </stride>
+    <left>
+      <offset>
+        <x>
+          -0.03
+        </x>
+        <y>
+          -0.035
+        </y>
+        <z>
+          -0.01
+        </z>
+      </offset>
+    </left>
+    <right>
+      <offset>
+        <x>
+          0.03
+        </x>
+        <y>
+          -0.035
+        </y>
+        <z>
+          -0.01
+        </z>
+      </offset>
+    </right>
+  </srs>
+  <pps>
+    <on>
+      false
+    </on>
+    <uncertainty units = "m/s">
+      0.1
+    </uncertainty>
+  </pps>
+  <!-- UDP Display server settings.  BASIListener will connect to this -->
+  <udpserver>
+    <on>
+      true
+    </on>
+    <port>
+      54321
+    </port>
+    <ip>
+      192.168.1.99 
+    </ip>
+    <stride>
+      100
+    </stride>
+  </udpserver>
+  <!-- File Logger -->
+  <logger>
+    <on>
+      true 
+    </on>
+    <filename>
+      mintlog
+    </filename>
+    <stride>
+      1
+    </stride>
+  </logger>
+</parameters>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Basil Ins</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="imu_header">IMU Inputs:</string>
+    <string name="ins_header">INS Outputs:</string>
+    <string name="acc_header">Accelerometer (m/s/s):</string>
+    <string name="gyr_header">Gyroscope (degrees/s):</string>
+    <string name="ori_header">Eulers (degrees):</string>
+    <string name="pos_header">Position (m):</string>
+    <string name="vel_header">Velocity (m/s):</string>
+
+</resources>

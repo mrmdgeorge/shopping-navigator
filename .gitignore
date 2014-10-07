@@ -1,0 +1,53 @@
+# Android Ignores
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+*.jar
+
+# generated files
+bin/
+gen/
+obj/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Mac OS X Ignores
+.DS_Store
+.svn/
+
+# Eclipse Ignores
+*.pydevproject
+.project
+.cproject
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+# .externalToolBuilders/
+#
+# # Locally stored "Eclipse launch configurations"
+# *.launch
+#
+# # CDT-specific
+# .cproject
+#
+# # PDT-specific
+# .buildpath
