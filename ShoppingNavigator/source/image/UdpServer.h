@@ -43,17 +43,17 @@
 class UdpServer
 {
 public:
-	UdpServer(const char*,int);
-	bool connect();
-	bool disconnect();
-	bool send(const unsigned char * data,unsigned int len);
-	unsigned char m_buf[1024];
-	int m_sdata;
+    UdpServer(const char*,int);
+    bool connect();
+    bool disconnect();
+    bool send(const unsigned char * data,unsigned int len);
+    unsigned char m_buf[1024];
+    int m_sdata;
     struct sockaddr_in m_sa;
     int m_socklength;
-	bool m_connected;
-	int m_Port;
-	const char * m_IP;
+    bool m_connected;
+    int m_Port;
+    const char * m_IP;
 };
 
 #endif //CUDPSERVER_H

@@ -72,14 +72,14 @@ public class BluetoothService {
 
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE =
-        UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final UUID MY_UUID_INSECURE =
-        UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
-    
+
     private AcceptThread mSecureAcceptThread;
     private AcceptThread mInsecureAcceptThread;
     private ConnectThread mConnectThread;
@@ -263,7 +263,7 @@ public class BluetoothService {
         // Perform the write unsynchronized
         r.startLogging(logfilename);
     }
-    
+
     public void stopLogging() {
         // Create temporary object
         ConnectedThread r;
@@ -275,7 +275,7 @@ public class BluetoothService {
         // Perform the write unsynchronized
         r.stopLogging();
     }
-    
+
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
@@ -324,7 +324,7 @@ public class BluetoothService {
             try {
                 if (secure) {
                     tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
-                        MY_UUID_SECURE);
+                            MY_UUID_SECURE);
                 } else {
                     tmp = mAdapter.listenUsingInsecureRfcommWithServiceRecord(
                             NAME_INSECURE, MY_UUID_INSECURE);
@@ -476,7 +476,7 @@ public class BluetoothService {
         private boolean mLoggingOn = false;
         private String mLogFileName = null;
         private BufferedOutputStream mLogFile = null;
-        
+
         public ConnectedThread(BluetoothSocket socket, String socketType) {
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
@@ -503,7 +503,7 @@ public class BluetoothService {
             int mBytesReceived = 101;
             BufferedInputStream mBufferedInputStream = new BufferedInputStream(mmInStream);
             DataInputStream mDataInputStream = new DataInputStream(mBufferedInputStream);
-            
+
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
@@ -522,18 +522,18 @@ public class BluetoothService {
 
                     // Read the header
                     mDataInputStream.readFully(buffer,3,19);
-                    
+
                     // Read the rest of the message
                     //messageSize = ByteBuffer.wrap(Arrays.copyOfRange(buffer, 8, 9)).getInt();
                     mDataInputStream.readFully(buffer,22,79);
-                    
+
                     if (mLoggingOn){
                         mLogFile.write(buffer,0,101);
                     }                  
 
                     // Send the obtained bytes to the UI Activity
                     mHandler.obtainMessage(SensorSettingsActivity.MESSAGE_READ, mBytesReceived, -1, buffer)
-                            .sendToTarget();
+                    .sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -558,7 +558,7 @@ public class BluetoothService {
                 Log.d(TAG, "Wrote BASIL Command Length:" + buffer.length);
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(SensorSettingsActivity.MESSAGE_WRITE, -1, -1, buffer)
-                        .sendToTarget();
+                .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);
             }
@@ -595,7 +595,7 @@ public class BluetoothService {
                 }
             }
         }
-        
+
         public void stopLogging() {
             if (mLoggingOn == false){
                 // Nothing to do.
@@ -612,7 +612,7 @@ public class BluetoothService {
                 }
             }
         }
-        
+
         public void cancel() {
             try {
                 mmSocket.close();

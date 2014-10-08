@@ -23,7 +23,7 @@
  **********************************************************************************/
 /**
  * @file   cxsensusbport.cpp
- * @brief  A simple class to wrap Xsens USB connectivity
+ * @brief  A simple class to wrap Xsens IMU USB connectivity
  * @author M. George
  */
 
@@ -32,16 +32,16 @@
 #include "cxsensusbport.h"
 
 /**************************************************************************//**
-* Constructor for cXsensUsbPort
-* \return None
-******************************************************************************/
+ * Constructor for cXsensUsbPort
+ * \return None
+ ******************************************************************************/
 cXsensUsbPort::cXsensUsbPort() : mPacket((unsigned short)1,false)
 {
     // Request cal data (acc,gyro,mag.) and euler data
     mOutputMode = CMT_OUTPUTMODE_CALIB | CMT_OUTPUTMODE_ORIENT;
     mSettings = CMT_OUTPUTSETTINGS_ORIENTMODE_EULER | CMT_OUTPUTSETTINGS_TIMESTAMP_SAMPLECNT;
-    
-    
+
+
     // Set constant components of the basil header we will add to it
     mData.header.sync[0] = 'C';
     mData.header.sync[1] = 'M';
@@ -57,9 +57,9 @@ cXsensUsbPort::cXsensUsbPort() : mPacket((unsigned short)1,false)
 }
 
 /**************************************************************************//**
-* Destructor for cXsensUsbPort
-* \return None
-******************************************************************************/
+ * Destructor for cXsensUsbPort
+ * \return None
+ ******************************************************************************/
 cXsensUsbPort::~cXsensUsbPort()
 {
     disconnect();
@@ -68,46 +68,46 @@ cXsensUsbPort::~cXsensUsbPort()
 //! Do any setup necessary for a connection here
 bool cXsensUsbPort::configure()
 {
-	// Perform hardware scan
-	int mtCount = scanHardware();
-	std::cout << mtCount << " Xsens Devices Found" << std::endl;
-	
-	// Check for successful detection
-	if (mtCount == 0) 
-	{
+    // Perform hardware scan
+    int mtCount = scanHardware();
+    std::cout << mtCount << " Xsens Devices Found" << std::endl;
+
+    // Check for successful detection
+    if (mtCount == 0)
+    {
         std::cout << "No XSens devices found" << std::endl;
-		mImu.closePort();
-		return false;
-	}
-	
+        mImu.closePort();
+        return false;
+    }
+
     // Set device to user input settings
-	mResult = mImu.gotoConfig();
-	if (mResult != XRV_OK)
-	{
-	    std::cout << "Error: XSens device could not open config." << std::endl;
-	    return false;
-	}
+    mResult = mImu.gotoConfig();
+    if (mResult != XRV_OK)
+    {
+        std::cout << "Error: XSens device could not open config." << std::endl;
+        return false;
+    }
 
-	mSampleFrequency = mImu.getSampleFrequency();
+    mSampleFrequency = mImu.getSampleFrequency();
 
-	// set the device output mode for the device(s)
-	CmtDeviceMode deviceMode(mOutputMode, mSettings, mSampleFrequency);
-	mResult = mImu.setDeviceMode(deviceMode,true,mDeviceId);
-	if (mResult != XRV_OK)
-	{
-	    std::cout << "Error: XSens device could not set device mode." << std::endl;
-	    return false;
-	}
+    // set the device output mode for the device(s)
+    CmtDeviceMode deviceMode(mOutputMode, mSettings, mSampleFrequency);
+    mResult = mImu.setDeviceMode(deviceMode,true,mDeviceId);
+    if (mResult != XRV_OK)
+    {
+        std::cout << "Error: XSens device could not set device mode." << std::endl;
+        return false;
+    }
 
-	// start receiving data
-	mResult = mImu.gotoMeasurement();
-	if (mResult != XRV_OK)
-	{
-	    std::cout << "Error: XSens device could not return to measurement." << std::endl;
-	    return false;
-	}
-	
-	return true;
+    // start receiving data
+    mResult = mImu.gotoMeasurement();
+    if (mResult != XRV_OK)
+    {
+        std::cout << "Error: XSens device could not return to measurement." << std::endl;
+        return false;
+    }
+
+    return true;
 }
 
 //! Extract a self contained BASIL data packet
@@ -117,10 +117,10 @@ void cXsensUsbPort::getPacket(char* buffer)
     mImu.waitForDataMessage(&mPacket);
     mRawData = mPacket.getCalData(0);
     mEulerData = mPacket.getOriEuler(0);
-    
+
     // Set the time
     mData.header.time.setTime(BASIL::TIME::FREE_RUNNING,0,static_cast<double>(mPacket.getRtc())*1e-3);
-    
+
     // Set the non-constant elements of the BASIL IMU packet
     mData.acceleration[0] = mRawData.m_acc.m_data[0];
     mData.acceleration[1] = mRawData.m_acc.m_data[1];
@@ -132,15 +132,15 @@ void cXsensUsbPort::getPacket(char* buffer)
     mData.messageId = 0;
     mData.messageLength = 0;
     mData.checksum = 0;
-        
+
     // Copy to the buffer
     memcpy(buffer, &mData, sizeof(BASIL::XsensData));
 }
 
 /**************************************************************************//**
-* Diconnect here
-* \return None
-******************************************************************************/
+ * Diconnect here
+ * \return None
+ ******************************************************************************/
 void cXsensUsbPort::disconnect()
 {
     mImu.closePort();
@@ -148,39 +148,39 @@ void cXsensUsbPort::disconnect()
 
 int cXsensUsbPort::scanHardware()
 {
-	unsigned long portCount = 0;
-	int mtCount;
-	
-	std::cout << "Scanning for connected Xsens devices..." << std::endl;
-	xsens::cmtScanPorts(mPortInfo);
-	portCount = mPortInfo.length();
-	std::cout << "Done scanning." << std::endl;;
+    unsigned long portCount = 0;
+    int mtCount;
 
-	if (portCount == 0) 
-	{
-		std::cout << "No MotionTrackers found" << std::endl;
-		return 0;
-	}
+    std::cout << "Scanning for connected Xsens devices..." << std::endl;
+    xsens::cmtScanPorts(mPortInfo);
+    portCount = mPortInfo.length();
+    std::cout << "Done scanning." << std::endl;;
 
-	std::cout << "Using COM port " << mPortInfo[0].m_portName << ", at " << mPortInfo[0].m_baudrate << std::endl;
+    if (portCount == 0)
+    {
+        std::cout << "No MotionTrackers found" << std::endl;
+        return 0;
+    }
 
-	std::cout << "Opening port..." << std::endl;
-	mResult = mImu.openPort(mPortInfo[0].m_portName, mPortInfo[0].m_baudrate);
-	if (mResult != XRV_OK)
-	{
-	    std::cout << "Error: XSens device could not open port." << std::endl;
-	    return false;
-	}
-	std::cout << "Done opening." << std::endl;
+    std::cout << "Using COM port " << mPortInfo[0].m_portName << ", at " << mPortInfo[0].m_baudrate << std::endl;
 
-	// retrieve the device IDs 
-	std::cout << "Retrieving MotionTracker device ID" << std::endl;
-	mResult = mImu.getDeviceId((unsigned char)(1), mDeviceId);
-	if (mResult != XRV_OK)
-	{
-	    std::cout << "Error: XSens device given ID: " << mDeviceId << std::endl;
-	    return false;
-	}
-	
-	return true;
+    std::cout << "Opening port..." << std::endl;
+    mResult = mImu.openPort(mPortInfo[0].m_portName, mPortInfo[0].m_baudrate);
+    if (mResult != XRV_OK)
+    {
+        std::cout << "Error: XSens device could not open port." << std::endl;
+        return false;
+    }
+    std::cout << "Done opening." << std::endl;
+
+    // retrieve the device IDs
+    std::cout << "Retrieving MotionTracker device ID" << std::endl;
+    mResult = mImu.getDeviceId((unsigned char)(1), mDeviceId);
+    if (mResult != XRV_OK)
+    {
+        std::cout << "Error: XSens device given ID: " << mDeviceId << std::endl;
+        return false;
+    }
+
+    return true;
 }

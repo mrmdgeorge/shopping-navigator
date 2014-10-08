@@ -54,7 +54,8 @@ extern "C" {
 boost::property_tree::ptree* config;
 BASIL::cINS* ins;
 BASIL::cInsErrorModel<BASIL::INS::NINE_STATE>* error_model;
-SAGE::cSageFilter< BASIL::cKalmanFilter, BASIL::cInsErrorModel<BASIL::INS::NINE_STATE> >* filter;
+SAGE::cSageFilter<BASIL::cKalmanFilter,
+BASIL::cInsErrorModel<BASIL::INS::NINE_STATE> >* filter;
 double sensor_time;
 BASIL::cImuMsg* imu_msg;
 
@@ -65,53 +66,53 @@ BASIL::cImuMsg* imu_msg;
  */
 JNIEXPORT jboolean JNICALL Java_nrec_basil_androidins_Ins_init(JNIEnv* env, jobject thiz, jobject asset_manager)
 {
-	__android_log_print(ANDROID_LOG_INFO, "AndroidIns", "Initializing ...");
+    __android_log_print(ANDROID_LOG_INFO, "AndroidIns", "Initializing ...");
 
-	sensor_time = 0.0;
+    sensor_time = 0.0;
 
-	// Setup the static components of an IMU message
-	imu_msg = new BASIL::cImuMsg;
-	imu_msg->MessageType = BASIL::MESSAGE::IMU;
-	imu_msg->MessageVersion = BASIL::IMU::BASIL_IMU;
-	imu_msg->HardwareId = 0;
-	imu_msg->DeviceId = 0;
-	imu_msg->Time.setTime(BASIL::TIME::FREE_RUNNING, 0, sensor_time);
-	imu_msg->ImuMdl = BASIL::IMU::BASIL_IMU;
-	imu_msg->ImuStatus = BASIL::IMU::GOOD;
-	imu_msg->DataType = BASIL::IMU::RATE;
-	imu_msg->Acceleration.setZero();
-	imu_msg->AngularRate.setZero();
-	imu_msg->DeltaVelocity.setZero();
-	imu_msg->DeltaAngle.setZero();
-	imu_msg->Temperature = 0.0;
+    // Setup the static components of an IMU message
+    imu_msg = new BASIL::cImuMsg;
+    imu_msg->MessageType = BASIL::MESSAGE::IMU;
+    imu_msg->MessageVersion = BASIL::IMU::BASIL_IMU;
+    imu_msg->HardwareId = 0;
+    imu_msg->DeviceId = 0;
+    imu_msg->Time.setTime(BASIL::TIME::FREE_RUNNING, 0, sensor_time);
+    imu_msg->ImuMdl = BASIL::IMU::BASIL_IMU;
+    imu_msg->ImuStatus = BASIL::IMU::GOOD;
+    imu_msg->DataType = BASIL::IMU::RATE;
+    imu_msg->Acceleration.setZero();
+    imu_msg->AngularRate.setZero();
+    imu_msg->DeltaVelocity.setZero();
+    imu_msg->DeltaAngle.setZero();
+    imu_msg->Temperature = 0.0;
 
-	// Get the configuration file from the package assets
-	AAssetManager* mgr = AAssetManager_fromJava(env, asset_manager);
-	AAsset* asset = AAssetManager_open(mgr, "config-sage.xml", AASSET_MODE_BUFFER);
-	// Check we were able to get something
-	if (asset == NULL)
-	{
-		__android_log_print(ANDROID_LOG_INFO, "AndroidIns", "Could not open asset ...");
-	    return JNI_FALSE;
-	}
-	// Copy the asset into a local buffer
-	long size = AAsset_getLength(asset);
-	char* config_file = new char[size];
-	int copied = AAsset_read(asset,config_file,size);
+    // Get the configuration file from the package assets
+    AAssetManager* mgr = AAssetManager_fromJava(env, asset_manager);
+    AAsset* asset = AAssetManager_open(mgr, "config-sage.xml",AASSET_MODE_BUFFER);
+    // Check we were able to get something
+    if (asset == NULL) {
+        __android_log_print(ANDROID_LOG_INFO, "AndroidIns",
+                "Could not open asset ...");
+        return JNI_FALSE;
+    }
+    // Copy the asset into a local buffer
+    long size = AAsset_getLength(asset);
+    char* config_file = new char[size];
+    int copied = AAsset_read(asset, config_file, size);
 
-	// Populate the property tree with the data, read_xml needs a filename or an istream so we use an istringstream
-	config = new boost::property_tree::ptree;
-    std::istringstream config_stream(std::string(config_file,copied));
-	boost::property_tree::read_xml(config_stream, *config, boost::property_tree::xml_parser::trim_whitespace);
+    // Populate the property tree with the data, read_xml needs a filename or an istream so we use an istringstream
+    config = new boost::property_tree::ptree;
+    std::istringstream config_stream(std::string(config_file, copied));
+    boost::property_tree::read_xml(config_stream, *config,boost::property_tree::xml_parser::trim_whitespace);
 
-	// Close the asset and delete the buffer since we now have a populate ptree
-	AAsset_close(asset);
-	delete[] config_file;
+    // Close the asset and delete the buffer since we now have a populate ptree
+    AAsset_close(asset);
+    delete[] config_file;
 
-	// Initialize the INS
-	ins = new BASIL::cINS(*config,"sage-main");
+    // Initialize the INS
+    ins = new BASIL::cINS(*config, "sage-main");
     error_model = new BASIL::cInsErrorModel<BASIL::INS::NINE_STATE>(*config,"sage-main");
-    filter = new SAGE::cSageFilter< BASIL::cKalmanFilter, BASIL::cInsErrorModel<BASIL::INS::NINE_STATE> >(*error_model,*config,"sage-main");
+    filter = new SAGE::cSageFilter<BASIL::cKalmanFilter,BASIL::cInsErrorModel<BASIL::INS::NINE_STATE> >(*error_model,*config, "sage-main");
 
     // Make subscription connections
     BASIL::cImuMsg::subscribe(boost::ref(*ins));
@@ -131,12 +132,12 @@ JNIEXPORT jboolean JNICALL Java_nrec_basil_androidins_Ins_init(JNIEnv* env, jobj
  */
 JNIEXPORT void JNICALL Java_nrec_basil_androidins_Ins_close(JNIEnv* env, jobject thiz)
 {
-	// Delete our objects in reverse order
-	delete filter;
-	delete error_model;
-	delete ins;
-	delete config;
-	delete imu_msg;
+    // Delete our objects in reverse order
+    delete filter;
+    delete error_model;
+    delete ins;
+    delete config;
+    delete imu_msg;
 }
 
 /*
@@ -146,14 +147,14 @@ JNIEXPORT void JNICALL Java_nrec_basil_androidins_Ins_close(JNIEnv* env, jobject
  */
 JNIEXPORT void JNICALL Java_nrec_basil_androidins_Ins_integrate(JNIEnv* env, jobject thiz, jdoubleArray imudata)
 {
-	// Update the imu_msg fields with the new data
-	env->GetDoubleArrayRegion(imudata, 0, 1, &sensor_time);
-	imu_msg->Time.setTime(BASIL::TIME::FREE_RUNNING, 0, sensor_time);
-	env->GetDoubleArrayRegion(imudata, 1, 3, imu_msg->Acceleration.data());
-	env->GetDoubleArrayRegion(imudata, 4, 3, imu_msg->AngularRate.data());
+    // Update the imu_msg fields with the new data
+    env->GetDoubleArrayRegion(imudata, 0, 1, &sensor_time);
+    imu_msg->Time.setTime(BASIL::TIME::FREE_RUNNING, 0, sensor_time);
+    env->GetDoubleArrayRegion(imudata, 1, 3, imu_msg->Acceleration.data());
+    env->GetDoubleArrayRegion(imudata, 4, 3, imu_msg->AngularRate.data());
 
-	// Call IMU subscribers
-	BASIL::cImuMsg::notify(*imu_msg);
+    // Call IMU subscribers
+    BASIL::cImuMsg::notify(*imu_msg);
 }
 
 /*
@@ -161,25 +162,23 @@ JNIEXPORT void JNICALL Java_nrec_basil_androidins_Ins_integrate(JNIEnv* env, job
  * Method:    get_pose
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_nrec_basil_androidins_Ins_get_1pose(JNIEnv* env, jobject thiz)
-{
-	// Create a Java array to carry our pose output
-	jdoubleArray pose = env->NewDoubleArray(10);
+JNIEXPORT jdoubleArray JNICALL Java_nrec_basil_androidins_Ins_get_1pose(JNIEnv* env, jobject thiz) {
+    // Create a Java array to carry our pose output
+    jdoubleArray pose = env->NewDoubleArray(10);
 
-	// Check we were able to get memory for it
-	if (pose == NULL)
-	{
-	    return NULL;
-	}
+    // Check we were able to get memory for it
+    if (pose == NULL) {
+        return NULL;
+    }
 
-	sensor_time = ins->mInsData.Time.getSeconds();
-	env->SetDoubleArrayRegion(pose, 0, 1, &sensor_time);
-	env->SetDoubleArrayRegion(pose, 1, 3, ins->mInsData.Orientation.data());
-	env->SetDoubleArrayRegion(pose, 4, 3, ins->mInsData.Position.data());
-	//__android_log_print(ANDROID_LOG_INFO, "AndroidIns", "Eulers: %lf, %lf, %lf", ins->mInsData.Position(0), ins->mInsData.Position(1), ins->mInsData.Position(2));
-	env->SetDoubleArrayRegion(pose, 7, 3, ins->mInsData.Velocity.data());
+    sensor_time = ins->mInsData.Time.getSeconds();
+    env->SetDoubleArrayRegion(pose, 0, 1, &sensor_time);
+    env->SetDoubleArrayRegion(pose, 1, 3, ins->mInsData.Orientation.data());
+    env->SetDoubleArrayRegion(pose, 4, 3, ins->mInsData.Position.data());
+    //__android_log_print(ANDROID_LOG_INFO, "AndroidIns", "Eulers: %lf, %lf, %lf", ins->mInsData.Position(0), ins->mInsData.Position(1), ins->mInsData.Position(2));
+    env->SetDoubleArrayRegion(pose, 7, 3, ins->mInsData.Velocity.data());
 
-	return pose;
+    return pose;
 }
 
 #ifdef __cplusplus

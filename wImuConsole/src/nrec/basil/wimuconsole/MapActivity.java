@@ -76,12 +76,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class MapActivity extends FragmentActivity implements
-    OnMapLongClickListener, ActionBar.OnNavigationListener{
+OnMapLongClickListener, ActionBar.OnNavigationListener {
 
     // Debugging
     private static final String TAG = "wImuConsoleMap";
     private static final boolean D = true;
-    
+
     private GoogleMap mMap;
     private Marker mInitialPosition;
     private Marker mCurrentPosition;
@@ -89,33 +89,33 @@ public class MapActivity extends FragmentActivity implements
     private PolylineOptions mPolylineOptions;
     private GroundOverlay mNRECOverlay;
     private GroundOverlay mIntelOverlay;
-    
+
     private boolean mInitialPositionSet = false;
     Handler mUIHandler;
-    
-    private static final double R2D = 180.0/3.141519;
-    private static final double D2R = 1.0/R2D;
-    
-    private TimerTask positionPlot = new TimerTask(){
-        public void run(){
+
+    private static final double R2D = 180.0 / 3.141519;
+    private static final double D2R = 1.0 / R2D;
+
+    private TimerTask positionPlot = new TimerTask() {
+        public void run() {
             plotInsData();
         }
     };
     private Timer timer = new Timer();
     //timer.schedule(positionPlot);
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-   
+
         setUpMapIfNeeded();
-        
+
         mUIHandler = new Handler(Looper.getMainLooper());
         mPolylineOptions = new PolylineOptions();
         mPolylineOptions.width(5)
-                        .color(Color.BLUE)
-                        .geodesic(true);
+        .color(Color.BLUE)
+        .geodesic(true);
         timer.schedule(positionPlot,2000,500);
     }
 
@@ -124,7 +124,7 @@ public class MapActivity extends FragmentActivity implements
         super.onResume();
         setUpMapIfNeeded();
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -153,7 +153,7 @@ public class MapActivity extends FragmentActivity implements
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            
+
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
@@ -171,21 +171,21 @@ public class MapActivity extends FragmentActivity implements
         mMap.setOnMapLongClickListener(this);
         mMap.setMyLocationEnabled(true);
         mInitialPosition = mMap.addMarker(new MarkerOptions()
-                               .position(new LatLng(0,0))
-                               .title("Initial Position")
-                               .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                               .visible(false));
+        .position(new LatLng(0,0))
+        .title("Initial Position")
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        .visible(false));
         mNRECOverlay = mMap.addGroundOverlay(new GroundOverlayOptions()
-                             .image(BitmapDescriptorFactory.fromResource(R.drawable.nrec_floorplan_notext)).anchor(222/3150, 1)
-                             .position(new LatLng(40.472513,-79.965032), 119.76f, 58.63f)
-                             .transparency(0.75f)
-                             .bearing(-57.9f));
-        
+        .image(BitmapDescriptorFactory.fromResource(R.drawable.nrec_floorplan_notext)).anchor(222/3150, 1)
+        .position(new LatLng(40.472513,-79.965032), 119.76f, 58.63f)
+        .transparency(0.75f)
+        .bearing(-57.9f));
+
         mIntelOverlay = mMap.addGroundOverlay(new GroundOverlayOptions()
-                            .image(BitmapDescriptorFactory.fromResource(R.drawable.intel_floorplan_notext)).anchor(1, 1)
-                            .position(new LatLng(40.4436194,-79.94638056), 45.5f, 40.85f)
-                            .transparency(0.25f)
-                            .bearing(16.5f));
+        .image(BitmapDescriptorFactory.fromResource(R.drawable.intel_floorplan_notext)).anchor(1, 1)
+        .position(new LatLng(40.4436194,-79.94638056), 45.5f, 40.85f)
+        .transparency(0.25f)
+        .bearing(16.5f));
         //mInitialPosition.setVisible(false);
     }
 
@@ -193,7 +193,7 @@ public class MapActivity extends FragmentActivity implements
     public void onMapLongClick(LatLng point) {
         // Move the map so that it is centered on the mutable polyline.
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
-        
+
         // Uses a colored icon.
         mInitialPosition.setPosition(point);
         mInitialPosition.setVisible(true);
@@ -202,27 +202,27 @@ public class MapActivity extends FragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-      case R.id.actionbar_sensor_settings:
-          startActivity(new Intent(this, SensorSettingsActivity.class));
-        break;
-      case R.id.actionbar_camera_settings:
-          startActivity(new Intent(this, CameraActivity.class));
-        break;
-      default:
-        break;
-      }
+        switch (item.getItemId()) {
+        case R.id.actionbar_sensor_settings:
+            startActivity(new Intent(this, SensorSettingsActivity.class));
+            break;
+        case R.id.actionbar_camera_settings:
+            startActivity(new Intent(this, CameraActivity.class));
+            break;
+        default:
+            break;
+        }
 
-      return true;
+        return true;
     } 
-    
+
     @Override
     protected void onPause() {
         super.onPause();
     }
-    
+
     private void plotInsData() {
-        
+
         //double latIncrement;
         //double lonIncrement;
 
@@ -230,7 +230,7 @@ public class MapActivity extends FragmentActivity implements
         if (mInitialPositionSet) {
             //double currentLatitude = (mInitialPosition.getPosition().latitude*D2R + latIncrement)*R2D;
             //double currentLongitude = (mInitialPosition.getPosition().longitude*D2R + lonIncrement)*R2D;
-            
+
             new AsyncTask<String, String, String>() {
                 protected void onPreExecute() {
                     // perhaps show a dialog 
@@ -246,7 +246,7 @@ public class MapActivity extends FragmentActivity implements
                     double[] res = new double[2];
                     res[0] = (mInitialPosition.getPosition().latitude*D2R + SensorSettingsActivity.mCurrentLatitude / 6378000.0)*R2D;
                     res[1] = (mInitialPosition.getPosition().longitude*D2R + SensorSettingsActivity.mCurrentLongitude / 6378000.0)*R2D;
-                    
+
                     mPolylineOptions.add(new LatLng(res[0],res[1]));
                     if (mPolyline != null){
                         mPolyline.remove();
@@ -273,5 +273,5 @@ public class MapActivity extends FragmentActivity implements
         // TODO Auto-generated method stub
         return false;
     }
-    
+
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- *  The MIT License (MIT)                                                        *
+ *  The MIT License (MIT)                                                         *
  *                                                                                *
  *  Copyright (c) 2014 Carnegie Mellon University                                 *
  *                                                                                *
@@ -23,7 +23,7 @@
  **********************************************************************************/
 /**
  * @file   Ins.java
- * @brief  INS activity for quering IMU sensor and passing to the BASIL library
+ * @brief  INS activity for querying IMU sensor and passing to the BASIL library
  * @author M. George
  */
 
@@ -33,17 +33,17 @@ import android.content.res.AssetManager;
 
 // Inertial navigation system class.  This is mostly a wrapper for the C++ version
 // from the BASIL implementation.
-public class Ins 
-{
-	// Call the native initialization function which will create the necessary
-	// components and initialize them with parameters from the config-sage.xml
-	// file in the assets.
-	public native boolean init(AssetManager asset_manager);
-	public native void close();
-	
-	// Send IMU data in for integration.  imudata = time,ax,ay,az,gx,gy,gz.
-	public native void integrate(double[] imudata);
-	
-	// Poll INS for pose data, pose = time,r,p,y,x,y,z,vx,vy,vz
-	public native double[] get_pose();
+public class Ins {
+    // Call the native initialization function which will create the necessary
+    // components and initialize them with parameters from the config-sage.xml
+    // file in the assets.
+    public native boolean init(AssetManager asset_manager);
+
+    public native void close();
+
+    // Send IMU data in for integration. imudata = time,ax,ay,az,gx,gy,gz.
+    public native void integrate(double[] imudata);
+
+    // Poll INS for pose data, pose = time,r,p,y,x,y,z,vx,vy,vz
+    public native double[] get_pose();
 }

@@ -70,25 +70,25 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
     // Debugging
     private static final String TAG = "wImuConsoleCamera";
     private static final boolean D = true;
-    
+
     // Camera settings
     private static Camera mCamera = null;
 
     private Bitmap preview = null;
     private SurfaceHolder mHolder = null;
     private SurfaceView mView = null;
-    
+
     // Timer for synchronous image grabs
     private Timer mImageTimer = null;
     private long mImageCaptureDelay = 5000;
-    
+
     // Basil header for saving camera data
     private BluetoothService mBluetoothService = null;
     byte[] mBasilHeader;
     byte[] mBasilCrc;
     private Date mEpochTime;
     private ByteBuffer b;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,17 +96,17 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
 
         //get the Surface View at the main.xml file  
         mView = (SurfaceView) findViewById(R.id.surface_view);  
-  
+
         //Get a surface  
         mHolder = mView.getHolder();  
-  
+
         //add the callback interface methods defined below as the Surface View callbacks  
         mHolder.addCallback(this);
-        
+
         mImageTimer = new Timer();
-        
+
         mEpochTime = new Date();
-        
+
         // Constant parts of the basil header.
         // Message size (bytes 8-9) and time info need to be set for each message
         mBasilHeader = new byte[22];
@@ -123,10 +123,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
         mBasilHeader[11] = 0x03; // Time status (GPS Disciplined)
         short gpsWeek = (short)Math.floor((mEpochTime.getTime() - 315964800)/604800); // GPS Week number
         b.putShort(12, gpsWeek);
-        
+
         // CRC initialized to zero by Java
         mBasilCrc = new byte[4];
-        
+
         mBluetoothService = SensorSettingsActivity.mBluetoothService;
     }
 
@@ -135,20 +135,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
         super.onResume();
         mImageTimer.schedule(mCaptureTask, 1000, mImageCaptureDelay);
     }
-    
+
     @Override
     protected void onStop(){
         super.onStop();
         mCamera.release();
         mCamera = null;
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
         //mImageTimer.cancel();
     }
-    
+
     TimerTask mCaptureTask = new TimerTask(){
         public void run(){
             Log.d(TAG,"Camera Callback");
@@ -156,7 +156,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
             mCamera.takePicture(null,null,mPicture);
         }
     };
-       
+
     //sets what code should be executed after the picture is taken  
     Camera.PictureCallback mPicture = new Camera.PictureCallback()  
     {  
@@ -165,12 +165,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
         {  
             ImageView i;
             i = (ImageView)findViewById(R.id.camera_view);
-            
+
             // Decode the data obtained by the camera into a Bitmap  
             preview = BitmapFactory.decodeByteArray(data, 0, data.length);  
             // Set the iv_image  
             i.setImageBitmap(preview);
-            
+
             File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Environment.DIRECTORY_DCIM,"testimage.basil");
 
             // Put GPS Week
@@ -179,7 +179,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
             double gpsEpochSeconds = (double)gpsMilliSeconds/1000.0;
             short gpsWeek = (short)Math.floor((gpsEpochSeconds - 315964800)/604800); // GPS Week number
             b.putShort(12, gpsWeek);
-            
+
             // Put GPS seconds
             double gpsDecimalSecondsSinceWeek = (gpsEpochSeconds - 315964800.0)%604800.0;
             Log.d(TAG,"GPS Int Time: " + gpsDecimalSecondsSinceWeek);
@@ -189,7 +189,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
             Log.d(TAG,"GPS Nano Time: " + gpsNanoSecondsSinceSecond);
             b.putInt(14, gpsIntSecondsSinceWeek);
             b.putInt(18, gpsNanoSecondsSinceSecond);
-            
+
             // Put the size of the image in the header
             if (data.length > 65535){
                 // Make use of the reserved byte and puts a 3 byte int in the log.  Good
@@ -202,7 +202,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
             }else{
                 b.putShort(8, (short)data.length);
             }
-            
+
             if (mBluetoothService != null) {
                 mBluetoothService.write(mBasilHeader);
                 mBluetoothService.write(data);
@@ -212,70 +212,70 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
                 mBluetoothService = SensorSettingsActivity.mBluetoothService;
                 Log.d(TAG,"Failed writing data to bluetooth log.");
             }
-            
-//            try {
-//                FileOutputStream fos = new FileOutputStream(pictureFile);
-//                fos.write(mBasilHeader);
-//                fos.write(data);
-//                fos.write(mBasilCrc);
-//                fos.close();
-//            } catch (FileNotFoundException e) {
-//                Log.d(TAG, "File not found: " + e.getMessage());
-//            } catch (IOException e) {
-//                Log.d(TAG, "Error accessing file: " + e.getMessage());
-//            }
+
+            //            try {
+            //                FileOutputStream fos = new FileOutputStream(pictureFile);
+            //                fos.write(mBasilHeader);
+            //                fos.write(data);
+            //                fos.write(mBasilCrc);
+            //                fos.close();
+            //            } catch (FileNotFoundException e) {
+            //                Log.d(TAG, "File not found: " + e.getMessage());
+            //            } catch (IOException e) {
+            //                Log.d(TAG, "Error accessing file: " + e.getMessage());
+            //            }
         }  
     };  
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.camera, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-      case R.id.actionbar_sensor_settings:
-          startActivity(new Intent(this, SensorSettingsActivity.class));
-        break;
-      case R.id.actionbar_map_view:
-          startActivity(new Intent(this, MapActivity.class));
-        break;
-      default:
-        break;
-      }
+        switch (item.getItemId()) {
+        case R.id.actionbar_sensor_settings:
+            startActivity(new Intent(this, SensorSettingsActivity.class));
+            break;
+        case R.id.actionbar_map_view:
+            startActivity(new Intent(this, MapActivity.class));
+            break;
+        default:
+            break;
+        }
 
-      return true;
+        return true;
     }
 
     // Change the frame delay
     public void setFrameDelay(View view){
-//        // Check that we're actually connected before trying anything
-//        EditText frame_delay_input = (EditText)findViewById(R.id.camera_frame_delay);
-//        String frame_delay = frame_delay_input.getText().toString();
-//        mCaptureTask.cancel();
-//        mImageTimer.cancel();
-//        mImageTimer = new Timer();
-//        mImageTimer.schedule(mCaptureTask, 0, Long.parseLong(frame_delay));
-//        mCaptureTask = new TimerTask(){
-//            public void run(){
-//                //mCamera.startPreview();
-//                mCamera.takePicture(null,null,mPicture);
-//            }
-//        };
+        //        // Check that we're actually connected before trying anything
+        //        EditText frame_delay_input = (EditText)findViewById(R.id.camera_frame_delay);
+        //        String frame_delay = frame_delay_input.getText().toString();
+        //        mCaptureTask.cancel();
+        //        mImageTimer.cancel();
+        //        mImageTimer = new Timer();
+        //        mImageTimer.schedule(mCaptureTask, 0, Long.parseLong(frame_delay));
+        //        mCaptureTask = new TimerTask(){
+        //            public void run(){
+        //                //mCamera.startPreview();
+        //                mCamera.takePicture(null,null,mPicture);
+        //            }
+        //        };
     }
-    
+
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3)  
     {  
-         //get camera parameters  
-         Parameters parameters = mCamera.getParameters();  
-  
-         //set camera parameters  
-         mCamera.setParameters(parameters);  
-         mCamera.startPreview();
+        //get camera parameters  
+        Parameters parameters = mCamera.getParameters();  
+
+        //set camera parameters  
+        mCamera.setParameters(parameters);  
+        mCamera.startPreview();
     }  
 
     @Override
@@ -290,13 +290,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback{
             Log.e(TAG,"Could not get camera.",e);
         }
         try {  
-           mCamera.setPreviewDisplay(holder);  
-  
+            mCamera.setPreviewDisplay(holder);  
+
         } catch (IOException exception) {  
             mCamera.release();  
             mCamera = null;  
         }  
-        
+
     }
 
     @Override

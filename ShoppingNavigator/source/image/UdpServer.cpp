@@ -39,34 +39,34 @@ UdpServer::UdpServer(const char* in_IP,int in_Port)
 
 bool UdpServer::connect()
 {
-	m_sdata = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	if (m_sdata == -1) {
-		 std::cerr << "Error (UdpServer): Error creating socket." << std::endl;
-		 return false;
-	}
+    m_sdata = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (m_sdata == -1) {
+        std::cerr << "Error (UdpServer): Error creating socket." << std::endl;
+        return false;
+    }
 
-	memset(&m_sa, 0, sizeof(m_sa));
-	m_sa.sin_family = AF_INET;
-	m_sa.sin_addr.s_addr = inet_addr(m_IP);
-	m_sa.sin_port = htons(m_Port);
+    memset(&m_sa, 0, sizeof(m_sa));
+    m_sa.sin_family = AF_INET;
+    m_sa.sin_addr.s_addr = inet_addr(m_IP);
+    m_sa.sin_port = htons(m_Port);
 
-	return true;
+    return true;
 }
 
 bool UdpServer::disconnect()
 {
-	m_connected = close(m_sdata);
-	return !m_connected;
+    m_connected = close(m_sdata);
+    return !m_connected;
 }
 
 bool UdpServer::send(const unsigned char* in_data, unsigned int len)
 {
-	memcpy(&m_buf[0],in_data,len);
-	unsigned int sl=sendto(m_sdata,m_buf,len,0,(struct sockaddr *) &m_sa,sizeof(m_sa));
+    memcpy(&m_buf[0],in_data,len);
+    unsigned int sl=sendto(m_sdata,m_buf,len,0,(struct sockaddr *) &m_sa,sizeof(m_sa));
     if (sl != len)
-	{
+    {
         std::cerr<<"UdpServer Error Sending: " << sl << " " <<strerror( errno )<<std::endl;
         return false;	
-	} 
-	return true;
+    }
+    return true;
 }
